@@ -1,35 +1,32 @@
 import Comparator from '../../../utils/comparator/Comparator';
-
 /**
  * Binary search implementation.
  *
- * @param {*[]} sortedArray
- * @param {*} seekElement
- * @param {function(a, b)} [comparatorCallback]
- * @return {number}
+ * @param {*[]} sortedArray - The sorted array to search in.
+ * @param {*} seekElement - The element to search for.
+ * @param {function(a, b): number} [comparatorCallback] - A callback function to compare elements.
+ * @return {number} - The index of the seekElement in the sortedArray, or -1 if not found.
  */
-
 export default function binarySearch(sortedArray, seekElement, comparatorCallback) {
-  // Let's create comparator from the comparatorCallback function.
-  // Comparator object will give us common comparison methods like equal() and lessThen().
+  // Create a comparator function from the comparatorCallback.
+  // The Comparator object provides comparison methods like equal() and lessThan().
   const comparator = new Comparator(comparatorCallback);
 
-  // These two indices will contain current array (sub-array) boundaries.
+  // Initialize the indices for the current array boundaries.
   let startIndex = 0;
   let endIndex = sortedArray.length - 1;
 
-  // Let's continue to split array until boundaries are collapsed
-  // and there is nothing to split anymore.
+  // Continue splitting the array until boundaries collapse and nothing is left to split.
   while (startIndex <= endIndex) {
-    // Let's calculate the index of the middle element.
+    // Calculate the index of the middle element.
     const middleIndex = startIndex + Math.floor((endIndex - startIndex) / 2);
 
-    // If we've found the element just return its position.
+    // If we've found the element, return its position.
     if (comparator.equal(sortedArray[middleIndex], seekElement)) {
       return middleIndex;
     }
 
-    // Decide which half to choose for seeking next: left or right one.
+    // Decide which half to choose for the next search: left or right.
     if (comparator.lessThan(sortedArray[middleIndex], seekElement)) {
       // Go to the right half of the array.
       startIndex = middleIndex + 1;
@@ -39,6 +36,6 @@ export default function binarySearch(sortedArray, seekElement, comparatorCallbac
     }
   }
 
-  // Return -1 if we have not found anything.
+  // Return -1 if the element was not found.
   return -1;
 }
